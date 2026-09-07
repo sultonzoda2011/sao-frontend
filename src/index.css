@@ -8,8 +8,9 @@
   --color-base: #0a0e17;
   --color-panel: #10152a;
   --color-panel-2: #161c38;
-  --color-cyan: #4cc9f0;
-  --color-violet: #7b61ff;
+  --color-primary: #7c4dff;
+  --color-primary-hover: #6a3ae8;
+  --color-primary-soft: #8f66ff;
   --color-ink: #f2f5ff;
   --color-mist: #8b93a9;
   --color-danger: #ff6b6b;
@@ -51,7 +52,7 @@ body {
 }
 
 :focus-visible {
-  outline: 2px solid var(--color-cyan);
+  outline: 2px solid var(--color-primary-soft);
   outline-offset: 2px;
   border-radius: 8px;
 }
@@ -86,14 +87,11 @@ body {
 }
 
 .accent-gradient {
-  background: linear-gradient(135deg, var(--color-cyan), var(--color-violet));
+  background: var(--color-primary);
 }
 
 .accent-text-gradient {
-  background: linear-gradient(135deg, var(--color-cyan), var(--color-violet));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: var(--color-primary-soft);
 }
 
 .safe-top {

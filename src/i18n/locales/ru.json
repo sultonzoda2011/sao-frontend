@@ -1,0 +1,108 @@
+{
+  "app": {
+    "name": "SAO",
+    "tagline": "Связь без задержек, в любой точке сети"
+  },
+  "nav": {
+    "chats": "Чаты",
+    "search": "Поиск",
+    "profile": "Профиль",
+    "logout": "Выйти"
+  },
+  "auth": {
+    "loginOrUsername": "Email или логин",
+    "password": "Пароль",
+    "emailPlaceholder": "you@example.com",
+    "passwordPlaceholder": "••••••••",
+    "signingIn": "Входим…",
+    "signIn": "Войти",
+    "noAccount": "Нет аккаунта?",
+    "signUp": "Зарегистрироваться",
+    "email": "Email",
+    "username": "Логин",
+    "usernamePlaceholder": "kirito_2026",
+    "displayNameOptional": "Имя (необязательно)",
+    "displayNamePlaceholder": "Как вас видят другие",
+    "passwordMinPlaceholder": "Минимум 6 символов",
+    "creatingAccount": "Создаём аккаунт…",
+    "createAccount": "Создать аккаунт",
+    "haveAccount": "Уже есть аккаунт?",
+    "loginFailed": "Не удалось войти. Проверьте данные.",
+    "registerFailed": "Не удалось зарегистрироваться.",
+    "errors": {
+      "loginRequired": "Введите email или логин",
+      "passwordMin": "Минимум 6 символов",
+      "emailInvalid": "Некорректный email",
+      "usernameMin": "Минимум 3 символа",
+      "usernameFormat": "Только буквы, цифры, точка и подчёркивание"
+    }
+  },
+  "chats": {
+    "title": "Чаты",
+    "newChat": "Новый чат",
+    "empty": {
+      "title": "Пока пусто",
+      "subtitle": "Найдите собеседника на вкладке поиска и начните первый диалог.",
+      "cta": "Найти пользователя"
+    },
+    "noMessages": "Нет сообщений — начните переписку",
+    "deletedMessage": "Сообщение удалено",
+    "you": "Вы",
+    "unknownUser": "Пользователь"
+  },
+  "search": {
+    "title": "Поиск",
+    "placeholder": "Имя пользователя или email",
+    "recent": "Недавние запросы",
+    "removeFromHistory": "Удалить из истории",
+    "empty": "Никого не нашлось"
+  },
+  "chatRoom": {
+    "back": "Назад",
+    "typing": "печатает…",
+    "online": "в сети",
+    "lastSeen": "был(а) {{time}}",
+    "loading": "Загружаем сообщения…",
+    "emptyState": "Пока тишина. Напишите первое сообщение {{name}}.",
+    "editingMessage": "Редактирование сообщения",
+    "cancelEdit": "Отменить редактирование",
+    "messagePlaceholder": "Сообщение…",
+    "send": "Отправить",
+    "edited": "изменено",
+    "edit": "Изменить",
+    "delete": "Удалить"
+  },
+  "profile": {
+    "title": "Профиль",
+    "editProfile": "Редактировать профиль",
+    "changePassword": "Сменить пароль",
+    "editDialog": {
+      "title": "Профиль",
+      "subtitle": "Эти данные видят другие пользователи.",
+      "displayName": "Имя",
+      "username": "Логин",
+      "bio": "О себе",
+      "saving": "Сохраняем…",
+      "save": "Сохранить",
+      "failed": "Не удалось сохранить профиль"
+    },
+    "passwordDialog": {
+      "title": "Смена пароля",
+      "subtitle": "Введите текущий и новый пароль.",
+      "current": "Текущий пароль",
+      "new": "Новый пароль",
+      "saving": "Сохраняем…",
+      "save": "Сохранить",
+      "success": "Пароль обновлён",
+      "failed": "Не удалось сменить пароль"
+    },
+    "changeAvatar": "Изменить аватар",
+    "language": "Язык"
+  },
+  "time": {
+    "justNow": "только что",
+    "minutesAgo": "{{count}} мин назад",
+    "hoursAgo": "{{count}} ч назад",
+    "yesterday": "Вчера"
+  }
+}

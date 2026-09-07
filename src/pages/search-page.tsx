@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Search, X, Clock } from 'lucide-react';
 import { usersApi } from '@/lib/users-api';
@@ -10,6 +11,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { initialsFrom } from '@/lib/format';
 
 export default function SearchPage() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [query, setQuery] = useState('');
@@ -17,8 +19,8 @@ export default function SearchPage() {
   const [startingId, setStartingId] = useState<string | null>(null);
 
   useEffect(() => {
-    const t = setTimeout(() => setDebounced(query.trim()), 300);
-    return () => clearTimeout(t);
+    const timer = setTimeout(() => setDebounced(query.trim()), 300);
+    return () => clearTimeout(timer);
   }, [query]);
 
   const { data: results, isFetching } = useQuery({
@@ -52,13 +54,15 @@ export default function SearchPage() {
   return (
     <div className="flex h-full flex-col">
       <header className="safe-top px-5 pb-3 pt-6">
-        <h1 className="mb-3 font-[family-name:var(--font-display)] text-2xl font-extrabold">Поиск</h1>
+        <h1 className="mb-3 font-[family-name:var(--font-display)] text-2xl font-extrabold">
+          {t('search.title')}
+        </h1>
         <div className="relative">
           <Search className="pointer-events-none absolute left-4 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-mist" />
           <Input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Имя пользователя или email"
+            placeholder={t('search.placeholder')}
             className="pl-11"
             autoFocus
           />
@@ -73,13 +77,13 @@ export default function SearchPage() {
         </div>
       </header>
 
-      <div className="flex-1 overflow-y-auto px-3 pb-28">
+      <div className="flex-1 overflow-y-auto px-3 pb-28 md:pb-6">
         {debounced.length === 0 && (
           <div className="px-2">
             {history && history.length > 0 && (
               <>
                 <p className="mb-1 px-2 text-xs font-semibold uppercase tracking-wide text-mist/70">
-                  Недавние запросы
+                  {t('search.recent')}
                 </p>
                 <div className="flex flex-col">
                   {history.map((item) => (
@@ -94,7 +98,7 @@ export default function SearchPage() {
                       <button
                         onClick={() => removeHistoryItem(item.id)}
                         className="text-mist hover:text-ink"
-                        aria-label="Удалить из истории"
+                        aria-label={t('search.removeFromHistory')}
                       >
                         <X className="h-4 w-4" />
                       </button>
@@ -118,7 +122,7 @@ export default function SearchPage() {
         )}
 
         {debounced.length > 0 && !isFetching && results?.length === 0 && (
-          <p className="px-2 pt-10 text-center text-sm text-mist">Никого не нашлось</p>
+          <p className="px-2 pt-10 text-center text-sm text-mist">{t('search.empty')}</p>
         )}
 
         <div className="flex flex-col">

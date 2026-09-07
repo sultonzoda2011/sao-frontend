@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useTranslation } from 'react-i18next';
+import { useQuery } from '@tanstack/react-query';
 import { ArrowLeft, Send, X } from 'lucide-react';
 import { chatsApi } from '@/lib/chats-api';
 import { messagesApi } from '@/lib/messages-api';
@@ -16,6 +17,7 @@ import { cn } from '@/lib/utils';
 import type { Message } from '@/types';
 
 export default function ChatRoomPage() {
+  const { t } = useTranslation();
   const { chatId } = useParams<{ chatId: string }>();
   const navigate = useNavigate();
   const currentUserId = useAuthStore((s) => s.user?.id);
@@ -47,14 +49,14 @@ export default function ChatRoomPage() {
   }, [messages?.length, peerTyping]);
 
   const peer = chat?.peer;
-  const peerName = peer?.displayName || peer?.username || 'Пользователь';
+  const peerName = peer?.displayName || peer?.username || t('chats.unknownUser');
 
   const statusLabel = useMemo(() => {
-    if (peerTyping) return 'печатает…';
-    if (peer?.isOnline) return 'в сети';
-    if (peer?.lastSeenAt) return `был(а) ${formatLastSeen(peer.lastSeenAt)}`;
+    if (peerTyping) return t('chatRoom.typing');
+    if (peer?.isOnline) return t('chatRoom.online');
+    if (peer?.lastSeenAt) return t('chatRoom.lastSeen', { time: formatLastSeen(peer.lastSeenAt) });
     return '';
-  }, [peer, peerTyping]);
+  }, [peer, peerTyping, t]);
 
   function handleInputChange(value: string) {
     setDraft(value);
@@ -91,12 +93,12 @@ export default function ChatRoomPage() {
   }
 
   return (
-    <div className="flex h-full flex-col">
+    <div className="mx-auto flex h-dvh max-w-2xl flex-col md:border-x md:border-white/8">
       <header className="safe-top glass-soft z-10 flex items-center gap-3 px-3 pb-3 pt-6">
         <button
           onClick={() => navigate('/chats')}
           className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-ink active:bg-white/10"
-          aria-label="Назад"
+          aria-label={t('chatRoom.back')}
         >
           <ArrowLeft className="h-5 w-5" />
         </button>
@@ -112,17 +114,17 @@ export default function ChatRoomPage() {
         <div className="min-w-0 flex-1">
           <p className="truncate font-semibold text-ink">{peerName}</p>
           {statusLabel && (
-            <p className={cn('text-xs', peerTyping ? 'text-cyan' : 'text-mist')}>{statusLabel}</p>
+            <p className={cn('text-xs', peerTyping ? 'text-primary-soft' : 'text-mist')}>{statusLabel}</p>
           )}
         </div>
       </header>
 
       <div ref={scrollRef} className="flex-1 space-y-2.5 overflow-y-auto px-3 py-4">
-        {isLoading && <p className="pt-10 text-center text-sm text-mist">Загружаем сообщения…</p>}
+        {isLoading && <p className="pt-10 text-center text-sm text-mist">{t('chatRoom.loading')}</p>}
 
         {!isLoading && messages?.length === 0 && (
           <p className="pt-16 text-center text-sm text-mist">
-            Пока тишина. Напишите первое сообщение {peerName}.
+            {t('chatRoom.emptyState', { name: peerName })}
           </p>
         )}
 
@@ -139,16 +141,16 @@ export default function ChatRoomPage() {
         {peerTyping && <TypingIndicator />}
       </div>
 
-      <div className="safe-bottom px-3 pb-24 pt-2">
+      <div className="safe-bottom px-3 pb-24 pt-2 md:pb-4">
         {editing && (
           <div className="glass-soft mb-2 flex items-center justify-between rounded-2xl px-3 py-2 text-xs text-mist">
-            <span>Редактирование сообщения</span>
+            <span>{t('chatRoom.editingMessage')}</span>
             <button
               onClick={() => {
                 setEditing(null);
                 setDraft('');
               }}
-              aria-label="Отменить редактирование"
+              aria-label={t('chatRoom.cancelEdit')}
             >
               <X className="h-4 w-4" />
             </button>
@@ -165,15 +167,15 @@ export default function ChatRoomPage() {
                 handleSend();
               }
             }}
-            placeholder="Сообщение…"
+            placeholder={t('chatRoom.messagePlaceholder')}
             rows={1}
             className="max-h-32 min-h-[40px] border-none bg-transparent px-2 py-2 focus:bg-transparent"
           />
           <button
             onClick={handleSend}
             disabled={!draft.trim()}
-            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full accent-gradient text-[#050710] disabled:opacity-40"
-            aria-label="Отправить"
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary text-white disabled:opacity-40"
+            aria-label={t('chatRoom.send')}
           >
             <Send className="h-[18px] w-[18px]" />
           </button>

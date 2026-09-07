@@ -1,0 +1,108 @@
+{
+  "app": {
+    "name": "SAO",
+    "tagline": "Instant connection, anywhere on the network"
+  },
+  "nav": {
+    "chats": "Chats",
+    "search": "Search",
+    "profile": "Profile",
+    "logout": "Log out"
+  },
+  "auth": {
+    "loginOrUsername": "Email or username",
+    "password": "Password",
+    "emailPlaceholder": "you@example.com",
+    "passwordPlaceholder": "••••••••",
+    "signingIn": "Signing in…",
+    "signIn": "Sign in",
+    "noAccount": "Don't have an account?",
+    "signUp": "Sign up",
+    "email": "Email",
+    "username": "Username",
+    "usernamePlaceholder": "kirito_2026",
+    "displayNameOptional": "Name (optional)",
+    "displayNamePlaceholder": "How others see you",
+    "passwordMinPlaceholder": "At least 6 characters",
+    "creatingAccount": "Creating account…",
+    "createAccount": "Create account",
+    "haveAccount": "Already have an account?",
+    "loginFailed": "Couldn't sign in. Check your details.",
+    "registerFailed": "Couldn't create an account.",
+    "errors": {
+      "loginRequired": "Enter your email or username",
+      "passwordMin": "At least 6 characters",
+      "emailInvalid": "Invalid email",
+      "usernameMin": "At least 3 characters",
+      "usernameFormat": "Letters, numbers, dot and underscore only"
+    }
+  },
+  "chats": {
+    "title": "Chats",
+    "newChat": "New chat",
+    "empty": {
+      "title": "Nothing here yet",
+      "subtitle": "Find someone in Search and start your first conversation.",
+      "cta": "Find someone"
+    },
+    "noMessages": "No messages yet — say hello",
+    "deletedMessage": "Message deleted",
+    "you": "You",
+    "unknownUser": "User"
+  },
+  "search": {
+    "title": "Search",
+    "placeholder": "Username or email",
+    "recent": "Recent searches",
+    "removeFromHistory": "Remove from history",
+    "empty": "No one found"
+  },
+  "chatRoom": {
+    "back": "Back",
+    "typing": "typing…",
+    "online": "online",
+    "lastSeen": "last seen {{time}}",
+    "loading": "Loading messages…",
+    "emptyState": "It's quiet here. Send {{name}} your first message.",
+    "editingMessage": "Editing message",
+    "cancelEdit": "Cancel editing",
+    "messagePlaceholder": "Message…",
+    "send": "Send",
+    "edited": "edited",
+    "edit": "Edit",
+    "delete": "Delete"
+  },
+  "profile": {
+    "title": "Profile",
+    "editProfile": "Edit profile",
+    "changePassword": "Change password",
+    "editDialog": {
+      "title": "Profile",
+      "subtitle": "Other people can see this information.",
+      "displayName": "Name",
+      "username": "Username",
+      "bio": "Bio",
+      "saving": "Saving…",
+      "save": "Save",
+      "failed": "Couldn't save your profile"
+    },
+    "passwordDialog": {
+      "title": "Change password",
+      "subtitle": "Enter your current and new password.",
+      "current": "Current password",
+      "new": "New password",
+      "saving": "Saving…",
+      "save": "Save",
+      "success": "Password updated",
+      "failed": "Couldn't change your password"
+    },
+    "changeAvatar": "Change avatar",
+    "language": "Language"
+  },
+  "time": {
+    "justNow": "just now",
+    "minutesAgo": "{{count}}m ago",
+    "hoursAgo": "{{count}}h ago",
+    "yesterday": "Yesterday"
+  }
+}

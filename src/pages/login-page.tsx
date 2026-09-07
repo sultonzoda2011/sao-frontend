@@ -1,74 +1,75 @@
-import { useState, type FormEvent } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { AuthLayout } from '@/components/layout/auth-layout';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
+import { FormField } from '@/components/ui/form-field';
 import { authApi } from '@/lib/auth-api';
 import { useAuthStore } from '@/store/auth-store';
+import { makeLoginSchema, type LoginFormValues } from '@/lib/validation';
 
 export default function LoginPage() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const setSession = useAuthStore((s) => s.setSession);
-  const [login, setLogin] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [serverError, setServerError] = useState<string | null>(null);
 
-  async function handleSubmit(e: FormEvent) {
-    e.preventDefault();
-    setError(null);
-    setLoading(true);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<LoginFormValues>({
+    resolver: zodResolver(makeLoginSchema(t)),
+  });
+
+  async function onSubmit(values: LoginFormValues) {
+    setServerError(null);
     try {
-      const res = await authApi.login({ login, password });
+      const res = await authApi.login(values);
       setSession(res.user, res.accessToken);
-      navigate('/chats', { replace: true });
+      const from = searchParams.get('from');
+      navigate(from && from.startsWith('/') ? from : '/chats', { replace: true });
     } catch (err: any) {
-      setError(err?.response?.data?.message ?? 'Не удалось войти. Проверьте данные.');
-    } finally {
-      setLoading(false);
+      setServerError(err?.response?.data?.message ?? t('auth.loginFailed'));
     }
   }
 
   return (
     <AuthLayout>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        <div className="flex flex-col gap-1.5">
-          <Label htmlFor="login">Email или логин</Label>
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+        <FormField label={t('auth.loginOrUsername')} htmlFor="login" error={errors.login?.message}>
           <Input
             id="login"
             autoComplete="username"
-            value={login}
-            onChange={(e) => setLogin(e.target.value)}
-            placeholder="you@example.com"
-            required
+            placeholder={t('auth.emailPlaceholder')}
+            {...register('login')}
           />
-        </div>
+        </FormField>
 
-        <div className="flex flex-col gap-1.5">
-          <Label htmlFor="password">Пароль</Label>
+        <FormField label={t('auth.password')} htmlFor="password" error={errors.password?.message}>
           <Input
             id="password"
             type="password"
             autoComplete="current-password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="••••••••"
-            required
-            minLength={6}
+            placeholder={t('auth.passwordPlaceholder')}
+            {...register('password')}
           />
-        </div>
+        </FormField>
 
-        {error && <p className="text-sm text-danger">{error}</p>}
+        {serverError && <p className="text-sm text-danger">{serverError}</p>}
 
-        <Button type="submit" size="lg" disabled={loading} className="mt-2 w-full">
-          {loading ? 'Входим…' : 'Войти'}
+        <Button type="submit" size="lg" disabled={isSubmitting} className="mt-2 w-full">
+          {isSubmitting ? t('auth.signingIn') : t('auth.signIn')}
         </Button>
 
         <p className="text-center text-sm text-mist">
-          Нет аккаунта?{' '}
-          <Link to="/register" className="font-semibold text-cyan hover:underline">
-            Зарегистрироваться
+          {t('auth.noAccount')}{' '}
+          <Link to="/register" className="font-semibold text-primary-soft hover:underline">
+            {t('auth.signUp')}
           </Link>
         </p>
       </form>

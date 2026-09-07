@@ -1,4 +1,7 @@
-import { useState, type FormEvent } from 'react';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Dialog,
   DialogContent,
@@ -9,34 +12,37 @@ import {
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { FormField } from '@/components/ui/form-field';
 import { usersApi } from '@/lib/users-api';
+import { makeChangePasswordSchema, type ChangePasswordFormValues } from '@/lib/validation';
 
 export function ChangePasswordDialog() {
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
-  const [currentPassword, setCurrentPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [serverError, setServerError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
 
-  async function handleSubmit(e: FormEvent) {
-    e.preventDefault();
-    setError(null);
-    setLoading(true);
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm<ChangePasswordFormValues>({
+    resolver: zodResolver(makeChangePasswordSchema(t)),
+  });
+
+  async function onSubmit(values: ChangePasswordFormValues) {
+    setServerError(null);
     try {
-      await usersApi.updatePassword({ currentPassword, newPassword });
+      await usersApi.updatePassword(values);
       setSuccess(true);
-      setCurrentPassword('');
-      setNewPassword('');
+      reset();
       setTimeout(() => {
         setOpen(false);
         setSuccess(false);
       }, 900);
     } catch (err: any) {
-      setError(err?.response?.data?.message ?? 'Не удалось сменить пароль');
-    } finally {
-      setLoading(false);
+      setServerError(err?.response?.data?.message ?? t('profile.passwordDialog.failed'));
     }
   }
 
@@ -44,43 +50,37 @@ export function ChangePasswordDialog() {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant="glass" className="w-full justify-start">
-          Сменить пароль
+          {t('profile.changePassword')}
         </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Смена пароля</DialogTitle>
-          <DialogDescription>Введите текущий и новый пароль.</DialogDescription>
+          <DialogTitle>{t('profile.passwordDialog.title')}</DialogTitle>
+          <DialogDescription>{t('profile.passwordDialog.subtitle')}</DialogDescription>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-          <div className="flex flex-col gap-1.5">
-            <Label htmlFor="currentPassword">Текущий пароль</Label>
-            <Input
-              id="currentPassword"
-              type="password"
-              value={currentPassword}
-              onChange={(e) => setCurrentPassword(e.target.value)}
-              required
-            />
-          </div>
-          <div className="flex flex-col gap-1.5">
-            <Label htmlFor="newPassword">Новый пароль</Label>
-            <Input
-              id="newPassword"
-              type="password"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-              minLength={6}
-              required
-            />
-          </div>
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3">
+          <FormField
+            label={t('profile.passwordDialog.current')}
+            htmlFor="currentPassword"
+            error={errors.currentPassword?.message}
+          >
+            <Input id="currentPassword" type="password" {...register('currentPassword')} />
+          </FormField>
 
-          {error && <p className="text-sm text-danger">{error}</p>}
-          {success && <p className="text-sm text-online">Пароль обновлён</p>}
+          <FormField
+            label={t('profile.passwordDialog.new')}
+            htmlFor="newPassword"
+            error={errors.newPassword?.message}
+          >
+            <Input id="newPassword" type="password" {...register('newPassword')} />
+          </FormField>
 
-          <Button type="submit" disabled={loading} className="mt-2 w-full">
-            {loading ? 'Сохраняем…' : 'Сохранить'}
+          {serverError && <p className="text-sm text-danger">{serverError}</p>}
+          {success && <p className="text-sm text-online">{t('profile.passwordDialog.success')}</p>}
+
+          <Button type="submit" disabled={isSubmitting} className="mt-2 w-full">
+            {isSubmitting ? t('profile.passwordDialog.saving') : t('profile.passwordDialog.save')}
           </Button>
         </form>
       </DialogContent>

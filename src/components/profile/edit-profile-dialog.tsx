@@ -1,4 +1,7 @@
-import { useState, type FormEvent } from 'react';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Dialog,
   DialogContent,
@@ -10,38 +13,39 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Label } from '@/components/ui/label';
+import { FormField } from '@/components/ui/form-field';
 import { usersApi } from '@/lib/users-api';
 import { useAuthStore } from '@/store/auth-store';
+import { makeEditProfileSchema, type EditProfileFormValues } from '@/lib/validation';
 
 export function EditProfileDialog() {
+  const { t } = useTranslation();
   const user = useAuthStore((s) => s.user);
   const updateUser = useAuthStore((s) => s.updateUser);
   const [open, setOpen] = useState(false);
-  const [form, setForm] = useState({
-    displayName: user?.displayName ?? '',
-    username: user?.username ?? '',
-    bio: user?.bio ?? '',
+  const [serverError, setServerError] = useState<string | null>(null);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<EditProfileFormValues>({
+    resolver: zodResolver(makeEditProfileSchema(t)),
+    defaultValues: {
+      displayName: user?.displayName ?? '',
+      username: user?.username ?? '',
+      bio: user?.bio ?? '',
+    },
   });
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
 
-  function update<K extends keyof typeof form>(key: K, value: string) {
-    setForm((f) => ({ ...f, [key]: value }));
-  }
-
-  async function handleSubmit(e: FormEvent) {
-    e.preventDefault();
-    setError(null);
-    setLoading(true);
+  async function onSubmit(values: EditProfileFormValues) {
+    setServerError(null);
     try {
-      const updated = await usersApi.updateProfile(form);
+      const updated = await usersApi.updateProfile(values);
       updateUser(updated);
       setOpen(false);
     } catch (err: any) {
-      setError(err?.response?.data?.message ?? 'Не удалось сохранить профиль');
-    } finally {
-      setLoading(false);
+      setServerError(err?.response?.data?.message ?? t('profile.editDialog.failed'));
     }
   }
 
@@ -49,47 +53,40 @@ export function EditProfileDialog() {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant="glass" className="w-full justify-start">
-          Редактировать профиль
+          {t('profile.editProfile')}
         </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Профиль</DialogTitle>
-          <DialogDescription>Эти данные видят другие пользователи.</DialogDescription>
+          <DialogTitle>{t('profile.editDialog.title')}</DialogTitle>
+          <DialogDescription>{t('profile.editDialog.subtitle')}</DialogDescription>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-          <div className="flex flex-col gap-1.5">
-            <Label htmlFor="displayName">Имя</Label>
-            <Input
-              id="displayName"
-              value={form.displayName}
-              onChange={(e) => update('displayName', e.target.value)}
-            />
-          </div>
-          <div className="flex flex-col gap-1.5">
-            <Label htmlFor="username">Логин</Label>
-            <Input
-              id="username"
-              value={form.username}
-              onChange={(e) => update('username', e.target.value)}
-            />
-          </div>
-          <div className="flex flex-col gap-1.5">
-            <Label htmlFor="bio">О себе</Label>
-            <Textarea
-              id="bio"
-              rows={3}
-              maxLength={160}
-              value={form.bio}
-              onChange={(e) => update('bio', e.target.value)}
-            />
-          </div>
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3">
+          <FormField
+            label={t('profile.editDialog.displayName')}
+            htmlFor="displayName"
+            error={errors.displayName?.message}
+          >
+            <Input id="displayName" {...register('displayName')} />
+          </FormField>
 
-          {error && <p className="text-sm text-danger">{error}</p>}
+          <FormField
+            label={t('profile.editDialog.username')}
+            htmlFor="username"
+            error={errors.username?.message}
+          >
+            <Input id="username" {...register('username')} />
+          </FormField>
 
-          <Button type="submit" disabled={loading} className="mt-2 w-full">
-            {loading ? 'Сохраняем…' : 'Сохранить'}
+          <FormField label={t('profile.editDialog.bio')} htmlFor="bio" error={errors.bio?.message}>
+            <Textarea id="bio" rows={3} maxLength={160} {...register('bio')} />
+          </FormField>
+
+          {serverError && <p className="text-sm text-danger">{serverError}</p>}
+
+          <Button type="submit" disabled={isSubmitting} className="mt-2 w-full">
+            {isSubmitting ? t('profile.editDialog.saving') : t('profile.editDialog.save')}
           </Button>
         </form>
       </DialogContent>

@@ -1,0 +1,108 @@
+{
+  "app": {
+    "name": "SAO",
+    "tagline": "Пайваст бе таъхир, дар ҳар нуқтаи шабака"
+  },
+  "nav": {
+    "chats": "Чатҳо",
+    "search": "Ҷустуҷӯ",
+    "profile": "Профил",
+    "logout": "Баромадан"
+  },
+  "auth": {
+    "loginOrUsername": "Email ё логин",
+    "password": "Рамз",
+    "emailPlaceholder": "you@example.com",
+    "passwordPlaceholder": "••••••••",
+    "signingIn": "Даромадан…",
+    "signIn": "Ворид шудан",
+    "noAccount": "Ҳисоб надоред?",
+    "signUp": "Бақайдгирӣ",
+    "email": "Email",
+    "username": "Логин",
+    "usernamePlaceholder": "kirito_2026",
+    "displayNameOptional": "Ном (ихтиёрӣ)",
+    "displayNamePlaceholder": "Чӣ тавр дигарон шуморо мебинанд",
+    "passwordMinPlaceholder": "Ҳадди ақал 6 аломат",
+    "creatingAccount": "Сохтани ҳисоб…",
+    "createAccount": "Ҳисоб сохтан",
+    "haveAccount": "Аллакай ҳисоб доред?",
+    "loginFailed": "Ворид шудан имконнопазир аст. Маълумотро санҷед.",
+    "registerFailed": "Бақайдгирӣ имконнопазир аст.",
+    "errors": {
+      "loginRequired": "Email ё логинро ворид кунед",
+      "passwordMin": "Ҳадди ақал 6 аломат",
+      "emailInvalid": "Email нодуруст аст",
+      "usernameMin": "Ҳадди ақал 3 аломат",
+      "usernameFormat": "Танҳо ҳарф, рақам, нуқта ва зерхат"
+    }
+  },
+  "chats": {
+    "title": "Чатҳо",
+    "newChat": "Чати нав",
+    "empty": {
+      "title": "Ҳоло холист",
+      "subtitle": "Дар бахши ҷустуҷӯ ҳамсуҳбат ёбед ва сӯҳбати аввалро оғоз кунед.",
+      "cta": "Ҷустуҷӯи корбар"
+    },
+    "noMessages": "Паём нест — сӯҳбатро оғоз кунед",
+    "deletedMessage": "Паём нест карда шуд",
+    "you": "Шумо",
+    "unknownUser": "Корбар"
+  },
+  "search": {
+    "title": "Ҷустуҷӯ",
+    "placeholder": "Логин ё email",
+    "recent": "Дархостҳои охирин",
+    "removeFromHistory": "Аз таърих нест кардан",
+    "empty": "Ҳеҷ кас ёфт нашуд"
+  },
+  "chatRoom": {
+    "back": "Бозгашт",
+    "typing": "менависад…",
+    "online": "онлайн",
+    "lastSeen": "дар шабака буд {{time}}",
+    "loading": "Боркунии паёмҳо…",
+    "emptyState": "Ҳоло ором аст. Ба {{name}} паёми аввалро нависед.",
+    "editingMessage": "Таҳрири паём",
+    "cancelEdit": "Бекор кардани таҳрир",
+    "messagePlaceholder": "Паём…",
+    "send": "Фиристодан",
+    "edited": "таҳрир шуд",
+    "edit": "Таҳрир",
+    "delete": "Нест кардан"
+  },
+  "profile": {
+    "title": "Профил",
+    "editProfile": "Таҳрири профил",
+    "changePassword": "Иваз кардани рамз",
+    "editDialog": {
+      "title": "Профил",
+      "subtitle": "Ин маълумотро дигар корбарон мебинанд.",
+      "displayName": "Ном",
+      "username": "Логин",
+      "bio": "Дар бораи худ",
+      "saving": "Захира шуда истодааст…",
+      "save": "Захира кардан",
+      "failed": "Захираи профил имконнопазир аст"
+    },
+    "passwordDialog": {
+      "title": "Иваз кардани рамз",
+      "subtitle": "Рамзи ҷориро ва рамзи навро ворид кунед.",
+      "current": "Рамзи ҷорӣ",
+      "new": "Рамзи нав",
+      "saving": "Захира шуда истодааст…",
+      "save": "Захира кардан",
+      "success": "Рамз нав карда шуд",
+      "failed": "Иваз кардани рамз имконнопазир аст"
+    },
+    "changeAvatar": "Иваз кардани аватар",
+    "language": "Забон"
+  },
+  "time": {
+    "justNow": "ҳозир",
+    "minutesAgo": "{{count}} дақ. пеш",
+    "hoursAgo": "{{count}} соат пеш",
+    "yesterday": "Дирӯз"
+  }
+}

@@ -1,40 +1,26 @@
 import { NavLink } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { MessageCircle, Search, UserRound } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-const tabs = [
-  { to: '/chats', label: 'Чаты', icon: MessageCircle },
-  { to: '/search', label: 'Поиск', icon: Search },
-  { to: '/profile', label: 'Профиль', icon: UserRound },
-];
-
 export function BottomNav() {
+  const { t } = useTranslation();
+  const tabs = [
+    { to: '/chats', label: t('nav.chats'), icon: MessageCircle },
+    { to: '/search', label: t('nav.search'), icon: Search },
+    { to: '/profile', label: t('nav.profile'), icon: UserRound },
+  ];
+
   return (
-    <nav className="safe-bottom fixed inset-x-0 bottom-0 z-40 flex justify-center px-4 pb-3">
-      <div className="glass flex w-full max-w-sm items-center justify-around rounded-[28px] px-2 py-2">
+    <nav className="safe-bottom glass-soft fixed inset-x-0 bottom-0 z-40 border-t border-white/10 md:hidden">
+      <div className="mx-auto flex max-w-md items-center justify-around px-6 py-2.5">
         {tabs.map(({ to, label, icon: Icon }) => (
-          <NavLink
-            key={to}
-            to={to}
-            className={({ isActive }) =>
-              cn(
-                'flex flex-1 flex-col items-center gap-1 rounded-3xl py-2 text-[11px] font-medium transition-colors',
-                isActive ? 'text-ink' : 'text-mist hover:text-ink/80',
-              )
-            }
-          >
+          <NavLink key={to} to={to} className="flex flex-1 flex-col items-center py-1.5" aria-label={label}>
             {({ isActive }) => (
-              <>
-                <span
-                  className={cn(
-                    'flex h-9 w-9 items-center justify-center rounded-full transition-all',
-                    isActive && 'accent-gradient shadow-[0_6px_16px_-4px_rgba(76,201,240,0.6)]',
-                  )}
-                >
-                  <Icon className={cn('h-[19px] w-[19px]', isActive && 'text-[#050710]')} strokeWidth={2.3} />
-                </span>
-                {label}
-              </>
+              <Icon
+                className={cn('h-[26px] w-[26px] transition-all', isActive ? 'text-primary' : 'text-mist')}
+                strokeWidth={isActive ? 2.4 : 1.9}
+              />
             )}
           </NavLink>
         ))}

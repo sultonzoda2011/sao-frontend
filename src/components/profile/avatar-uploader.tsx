@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Camera, Loader2 } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { initialsFrom } from '@/lib/format';
@@ -6,6 +7,7 @@ import { usersApi } from '@/lib/users-api';
 import { useAuthStore } from '@/store/auth-store';
 
 export function AvatarUploader() {
+  const { t } = useTranslation();
   const user = useAuthStore((s) => s.user);
   const updateUser = useAuthStore((s) => s.updateUser);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -36,8 +38,8 @@ export function AvatarUploader() {
       <button
         onClick={() => inputRef.current?.click()}
         disabled={uploading}
-        className="absolute -bottom-1 -right-1 flex h-9 w-9 items-center justify-center rounded-full accent-gradient text-[#050710] shadow-[0_6px_16px_-4px_rgba(76,201,240,0.6)]"
-        aria-label="Изменить аватар"
+        className="absolute -bottom-1 -right-1 flex h-9 w-9 items-center justify-center rounded-full bg-primary text-white shadow-[0_6px_16px_-4px_rgba(124,77,255,0.55)]"
+        aria-label={t('profile.changeAvatar')}
       >
         {uploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Camera className="h-4 w-4" />}
       </button>
